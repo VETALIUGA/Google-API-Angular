@@ -1,0 +1,49 @@
+$background-light: #E9D8BC;
+$text-dark: #25383C;
+
+
+agm-map {
+    height: 300px;
+  }
+
+.header {
+    &__section {
+        background-color: $background-light;
+        padding: 15px 0;
+    }
+    &__article {
+        color: $text-dark;
+    }
+}
+
+.map {
+    &__section {
+       
+    }
+    &__container {
+        position: relative;
+    }
+    &__form {
+        z-index: 100;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background-color: rgba($color: #000000, $alpha: 0.3);
+        padding: 15px;
+        backdrop-filter: blur(5px);
+        color: #fff;
+    }
+    &__label {
+        
+    }
+    &__input {
+
+    }
+    &__info {
+        font-weight: 300;
+        &--colored {
+            font-weight: 500;
+        }
+    }
+}

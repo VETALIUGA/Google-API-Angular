@@ -1,1 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,700&display=swap&subset=cyrillic-ext');
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.container-fluid {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.article {
+    margin: 0;
+    &--size {
+        &-lg {
+            font-size: 48px;
+        }
+        &-md {
+            font-size: 36px;
+        }
+    }
+}
+.label {
+    display: block;
+    font-size: 12px;
+}
+
+.input {
+    width: 100%;
+    font-size: inherit;
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid grey;
+    font-size: 15px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: rgba($color: #FFF, $alpha: 1);
+    &::placeholder {
+        opacity: .3;
+        color: #000;
+    }
+}
