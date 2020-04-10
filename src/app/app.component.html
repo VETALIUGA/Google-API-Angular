@@ -1,32 +1,93 @@
 <header class="section header__section">
   <div class="container header__container">
-    <h1 class="article article--size-md header__article">Angular Google maps API realization</h1>
+    <div class="header__grid-list">
+      <div class="header__grid-item">
+        <h1 class="article article--size-md header__article">Angular Google maps API realization</h1>
+      </div>
+      <div class="header__grid-item">
+        <a href="https://github.com/VETALIUGA/Google-API-Angular" target="_blank" class="header__link">
+          <svg class="header__icon" enable-background="new 0 0 24 24" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z" />
+          </svg>
+        </a>
+      </div>
+    </div>
   </div>
 </header>
 <section class="section map__section">
-  <div class="container-fluid map__container">
-    <button (click)="changeCurInterface()">Change current Interface</button>
-    <div class="map__interface-wrap">
-      <div *ngIf="useApiSelect" class="map__form">
-        <label class="label map__label">Enter address</label>
-        <input type="text" class="input map__input" (keydown.enter)="$event.preventDefault()"
-          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" #search>
-        <h5>Current address: {{address}}</h5>
-        <div class="map__info">Current latitude: <span class="map__info--colored">{{latitude}}</span></div>
-        <div class="map__info">Current longitude: <span class="map__info--colored">{{longitude}}</span></div>
+  <div class="container map__container">
+    <div [class.active]="!interfaceIsHided" class="map__interface-wrap">
+      <button [class.active]="interfaceIsHided" (click)="toggleInterface()" class="map__button map__button--close">
+        <svg class="map__icon map__icon--hide" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 256 256"
+          style="enable-background:new 0 0 256 256;" xml:space="preserve">
+          <polygon points="207.093,30.187 176.907,0 48.907,128 176.907,256 207.093,225.813 109.28,128 		" />
+        </svg>
+        <span *ngIf="!interfaceIsHided">Hide</span>
+        <span *ngIf="interfaceIsHided">Show</span>
+      </button>
+      <h1 class="article article--size-lg map__article">Location <br> info</h1>
+      <div class="map__grid-list map__grid-list--info">
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-name">Current address: </span>
+        </div>
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-value">{{address}}</span>
+        </div>
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-name">Current latitude: </span>
+        </div>
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-value">{{latitude}}</span>
+        </div>
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-name">Current longitude: </span>
+        </div>
+        <div class="map__grid-item map__grid-item--info">
+          <span class="map__grid-item-value">{{longitude}}</span>
+        </div>
       </div>
-      <div *ngIf="!useApiSelect" class="map__selections">
-        <select (change)="setCurrentOption($event)" name="place__selector">
+      <hr class="map__separator">
+      <button class="map__button" (click)="changeCurInterface()">
+        <svg class="map__icon map__icon--change" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
+          style="enable-background:new 0 0 512 512;" xml:space="preserve">
+          <path d="M256,0C114.615,0,0,114.615,0,256s114.615,256,256,256s256-114.615,256-256S397.385,0,256,0z M256,480
+				C132.288,480,32,379.712,32,256S132.288,32,256,32s224,100.288,224,224S379.712,480,256,480z" />
+          <path d="M315.36,100.64l-22.72,22.72l36.8,36.64H160c-17.673,0-32,14.327-32,32v48h32v-48h169.44l-36.64,36.64l22.56,22.56l64-64
+				c6.204-6.241,6.204-16.319,0-22.56L315.36,100.64z" />
+          <path d="M352,320H182.56l36.64-36.64l-22.56-22.56l-64,64c-6.204,6.241-6.204,16.319,0,22.56l64,64l22.56-22.56L182.56,352H352
+				c17.673,0,32-14.327,32-32v-48h-32V320z" />
+        </svg>
+        <span>Change current Interface</span>
+      </button>
+      <!-- Google -->
+      <div [class.active]="!useApiSelect" class="map__variant">
+        <h3 class="article article--size-md map__form-article">Google variant:</h3>
+        <label class="label map__label" for="google-input">Enter address and choose:</label>
+        <input id="google-input" type="text" class="input map__input" (keydown.enter)="$event.preventDefault()"
+          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" #search>
+      </div>
+      <!-- Custom -->
+      <div [class.active]="useApiSelect" class="map__variant">
+        <h3 class="article article--size-md map__form-article">Select variant:</h3>
+        <label class="label map__label">Choose location:</label>
+        <select class="input map__input map__input--select" (change)="setCurrentOption($event)" name="place__selector">
           <option *ngFor="let item of places">{{item.name}}</option>
         </select>
-        <form class="map__adding-form" (submit)="addNewOption($event); $event.preventDefault()">
-          <input type="text" class="input map__input">
-          <button class="button map__button">Add</button>
+        <h3 class="article article--size-md map__form-article">... or add new location above:</h3>
+        <form class="map__form map__form--adding" (submit)="addNewOption($event); $event.preventDefault()">
+          <label class="label map__label" for="name-input">Enter name:</label>
+          <input id="name-input" type="text" class="input map__input">
+          <button class="map__button map__button--submit">Add</button>
+          <span [class.active]="isFormSuccess" class="map__form-success">New location added</span>
         </form>
       </div>
     </div>
 
-    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+    <agm-map [styles]="styles" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
       <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
         (dragEnd)="markerDragEnd($event)"></agm-marker>
     </agm-map>

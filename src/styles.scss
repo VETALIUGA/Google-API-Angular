@@ -14,14 +14,13 @@ body {
 .container {
     width: 100%;
     box-sizing: border-box;
-    max-width: 1240px;
     margin: 0 auto;
 }
 
-.container-fluid {
-    width: 100%;
-    box-sizing: border-box;
-}
+// .container-fluid {
+//     width: 100%;
+//     box-sizing: border-box;
+// }
 
 .article {
     margin: 0;
@@ -30,13 +29,15 @@ body {
             font-size: 48px;
         }
         &-md {
-            font-size: 36px;
+            font-size: 24px;
         }
     }
 }
 .label {
     display: block;
     font-size: 12px;
+    margin-bottom: 3px;
+    margin-left: 3px;
 }
 
 .input {

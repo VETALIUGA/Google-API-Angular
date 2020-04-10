@@ -13,19 +13,106 @@ export class AppComponent implements OnInit {
   zoom: number;
   address: string;
   private geoCoder: any;
-  useApiSelect = false;
+  useApiSelect = true;
+  interfaceIsHided = false;
+  isFormSuccess = false;
   places = [
     {
-      name: 'Mir',
-      latitude: 49.232552399999996,
-      longitude: 28.4744925
+      name: 'Кинотеатр "Мир"',
+      latitude: 49.224635181023004,
+      longitude: 28.41901368873595
     },
     {
-      name: 'Politeh',
-      latitude: 32,
-      longitude: 41
+      name: 'Винницкий политехнический университет',
+      latitude: 49.23407614389448,
+      longitude: 28.412136504821767
+    },
+    {
+      name: 'магазин "Сильпо"',
+      latitude: 49.226548041306835,
+      longitude: 28.404519031219472
     }
   ];
+  styles: any = [
+    { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#d59563' }]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#d59563' }]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [{ color: '#263c3f' }]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#6b9a76' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{ color: '#38414e' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#212a37' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#9ca5b3' }]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{ color: '#746855' }]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{ color: '#1f2835' }]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#f3d19c' }]
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [{ color: '#2f3948' }]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#d59563' }]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{ color: '#17263c' }]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{ color: '#515c6d' }]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{ color: '#17263c' }]
+    }
+  ]
 
 
   @ViewChild('search')
@@ -65,7 +152,9 @@ export class AppComponent implements OnInit {
     const foundedOption = this.places.find(item => item.name === currentOption);
     this.longitude = foundedOption.longitude;
     this.latitude = foundedOption.latitude;
+    this.address = event.target.value;
     console.log(event.target.value);
+    this.zoom = 8;
   }
 
   changeCurInterface() {
@@ -80,7 +169,9 @@ export class AppComponent implements OnInit {
     };
     this.places.push(newOption);
     console.log(event.target[0].value);
-    this.zoom = 12;
+    this.zoom = 8;
+    this.isFormSuccess = true;
+    setTimeout(()=> {this.isFormSuccess = false}, 2000);
   }
 
   private setCurrentLocation() {
@@ -109,7 +200,7 @@ export class AppComponent implements OnInit {
         }
       },
       (results: GeocoderResult[], status: string) => {
-        console.log(results);
+        console.log("Current results is", results);
         console.log(status);
         if (status === 'OK') {
           if (results[0]) {
@@ -125,5 +216,10 @@ export class AppComponent implements OnInit {
 
       }
     )
+  }
+
+  toggleInterface() {
+    this.interfaceIsHided = !this.interfaceIsHided;
+   
   }
 }
