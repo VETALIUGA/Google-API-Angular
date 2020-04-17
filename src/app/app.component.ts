@@ -17,6 +17,9 @@ export class AppComponent implements OnInit {
   interfaceIsHided = false;
   isFormSuccess = false;
   places = [
+    
+  ];
+  staticPlaces = [
     {
       name: 'Кинотеатр "Мир"',
       latitude: 49.224635181023004,
@@ -32,7 +35,7 @@ export class AppComponent implements OnInit {
       latitude: 49.226548041306835,
       longitude: 28.404519031219472
     }
-  ];
+  ]
   styles: any = [
     { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
     { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
@@ -124,18 +127,22 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.mapsAPILoader.load()
       .then(() => {
         this.setCurrentLocation();
+        
         this.geoCoder = new google.maps.Geocoder;
-
+        
         let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
           types: ["address"]
         });
+        
         autocomplete.addListener("place_changed", () => {
           this.ngZone.run(() => {
-            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+            
             if (place.geometry === undefined || place.geometry === null) {
               return;
             }
@@ -149,29 +156,16 @@ export class AppComponent implements OnInit {
 
   setCurrentOption(event) {
     const currentOption = event.target.value;
-    const foundedOption = this.places.find(item => item.name === currentOption);
+    const foundedOption = this.places.find(item => item.name === currentOption) || this.staticPlaces.find(item => item.name === currentOption);
     this.longitude = foundedOption.longitude;
     this.latitude = foundedOption.latitude;
     this.address = event.target.value;
     console.log(event.target.value);
-    this.zoom = 8;
+    this.zoom = 12;
   }
 
   changeCurInterface() {
     this.useApiSelect = !this.useApiSelect;
-  }
-
-  addNewOption(event) {
-    const newOption = {
-      name: event.target[0].value,
-      latitude: this.latitude,
-      longitude: this.longitude
-    };
-    this.places.push(newOption);
-    console.log(event.target[0].value);
-    this.zoom = 8;
-    this.isFormSuccess = true;
-    setTimeout(()=> {this.isFormSuccess = false}, 2000);
   }
 
   private setCurrentLocation() {
@@ -179,16 +173,44 @@ export class AppComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        this.zoom = 8;
+        this.zoom = 12;
         this.getAddress(this.latitude, this.longitude);
+        this.getNearbyPlaces(this.latitude, this.longitude);
       });
     }
   }
 
   markerDragEnd($event: MouseEvent) {
-    console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
+    this.getAddress(this.latitude, this.longitude);
+    this.getNearbyPlaces(this.latitude, this.longitude);
+  }
+
+  private getNearbyPlaces(latitude: number, longitude: number) {
+    let request = {
+      radius: 500,
+      location: {
+        lat: latitude,
+        lng: longitude
+      }
+    }
+    let nearbyPlaces = new google.maps.places.PlacesService(this.searchElementRef.nativeElement);
+    nearbyPlaces.nearbySearch(request, (results, status) => {
+      if(status === 'OK') {
+         const newPlaces = results.map((item) => {
+          return {
+            name: item.name,
+            latitude: item.geometry.location.lat(),
+            longitude: item.geometry.location.lng(),
+          }
+        });
+        
+        this.ngZone.run(() => {
+          this.places = [...newPlaces];
+        })
+      }
+    });
   }
 
   getAddress(latitude: number, longitude: number) {
@@ -201,11 +223,10 @@ export class AppComponent implements OnInit {
       },
       (results: GeocoderResult[], status: string) => {
         console.log("Current results is", results);
-        console.log(status);
         if (status === 'OK') {
           if (results[0]) {
+            this.address = results[0].formatted_address;            
             this.zoom = 12;
-            this.address = results[0].formatted_address;
           } else {
             console.info('No results found');
           }
@@ -220,6 +241,18 @@ export class AppComponent implements OnInit {
 
   toggleInterface() {
     this.interfaceIsHided = !this.interfaceIsHided;
-   
+
+  }
+  addNewOption(event) {
+    const newOption = {
+      name: event.target[0].value,
+      latitude: this.latitude,
+      longitude: this.longitude
+    };
+    this.staticPlaces.push(newOption);
+    console.log(event.target[0].value);
+    this.zoom = 12;
+    this.isFormSuccess = true;
+    setTimeout(() => { this.isFormSuccess = false }, 2000);
   }
 }

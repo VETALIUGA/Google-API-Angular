@@ -72,12 +72,18 @@
       </div>
       <!-- Custom -->
       <div [class.active]="useApiSelect" class="map__variant">
-        <h3 class="article article--size-md map__form-article">Select variant:</h3>
-        <label class="label map__label">Choose location:</label>
+        <h3 class="article article--size-md map__form-article">Drag marker and select variant:</h3>
+        <h4 class="article article--size-sm map__article">Dynamic list:</h4>
+        <label class="label map__label">Choose nearest location (500m):</label>
         <select class="input map__input map__input--select" (change)="setCurrentOption($event)" name="place__selector">
           <option *ngFor="let item of places">{{item.name}}</option>
         </select>
-        <h3 class="article article--size-md map__form-article">... or add new location above:</h3>
+        <h4 class="article article--size-sm map__article">Static list:</h4>
+        <label class="label map__label">Choose your static location:</label>
+        <select class="input map__input map__input--select" (change)="setCurrentOption($event)" name="place__selector">
+          <option *ngFor="let item of staticPlaces">{{item.name}}</option>
+        </select>
+        <h3 class="article article--size-md map__form-article">... or add new location to static list:</h3>
         <form class="map__form map__form--adding" (submit)="addNewOption($event); $event.preventDefault()">
           <label class="label map__label" for="name-input">Enter name:</label>
           <input id="name-input" type="text" class="input map__input">
